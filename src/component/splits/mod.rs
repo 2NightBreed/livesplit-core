@@ -358,6 +358,9 @@ impl Component {
             let icon = segment.icon();
             state.icon = *image_cache.cache(icon.id(), || icon.clone()).id();
 
+            let child_icon = segment.child_icon();
+            state.child_icon = *image_cache.cache(child_icon.id(), || child_icon.clone()).id();
+
             state.name.push_str(segment.name());
 
             for column in columns {

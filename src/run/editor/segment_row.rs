@@ -17,6 +17,12 @@ impl<T: Borrow<Editor>> SegmentRow<T> {
         editor.run.segment(self.index).icon()
     }
 
+    /// Accesses the child icon of the segment.
+    pub fn child_icon(&self) -> &Image {
+        let editor: &Editor = self.editor.borrow();
+        editor.run.segment(self.index).child_icon()
+    }
+
     /// Accesses the name of the segment.
     pub fn name(&self) -> &str {
         let editor: &Editor = self.editor.borrow();
