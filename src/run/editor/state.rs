@@ -159,6 +159,9 @@ impl Editor {
             let icon = self.run.segment(segment_index).icon();
             let icon = *image_cache.cache(icon.id(), || icon.clone()).id();
 
+            let child_icon = self.run.segment(segment_index).child_icon();
+            let child_icon = *image_cache.cache(child_icon.id(), || child_icon.clone()).id();
+
             let selected = if self.active_segment_index() == segment_index {
                 SelectionState::Active
             } else if self.selected_segments.contains(&segment_index) {

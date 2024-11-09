@@ -40,6 +40,19 @@ pub extern "C" fn Segment_icon_len(this: &Segment) -> usize {
     this.icon().data().len()
 }
 
+/// Accesses the segment child icon's data. If there is no segment child icon, this returns
+/// an empty buffer.
+#[no_mangle]
+pub extern "C" fn Segment_child_icon_ptr(this: &Segment) -> *const u8 {
+    this.child_icon().data().as_ptr()
+}
+
+/// Accesses the amount of bytes the segment child icon's data takes up.
+#[no_mangle]
+pub extern "C" fn Segment_child_icon_len(this: &Segment) -> usize {
+    this.child_icon().data().len()
+}
+
 /// Accesses the specified comparison's time. If there's none for this
 /// comparison, an empty time is being returned (but not stored in the
 /// segment).

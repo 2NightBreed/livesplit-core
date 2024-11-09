@@ -2,7 +2,8 @@
 //! Detailed Timer Component is a component that shows two timers, one for the
 //! total time of the current attempt and one showing the time of just the
 //! current segment. Other information, like segment times of up to two
-//! comparisons, the segment icon, and the segment's name, can also be shown.
+//! comparisons, the segment icon, the segment child icon, and the segment's name,
+//! can also be shown.
 
 use super::timer;
 use crate::{
@@ -25,7 +26,8 @@ mod tests;
 /// The Detailed Timer Component is a component that shows two timers, one for
 /// the total time of the current attempt and one showing the time of just the
 /// current segment. Other information, like segment times of up to two
-/// comparisons, the segment icon, and the segment's name, can also be shown.
+/// comparisons, the segment icon, the segment child icon, and the segment's name, 
+/// can also be shown.
 #[derive(Default, Clone)]
 pub struct Component {
     timer: timer::Component,
@@ -54,6 +56,8 @@ pub struct Settings {
     pub segment_timer: timer::Settings,
     /// Specifies whether the segment icon should be shown.
     pub display_icon: bool,
+    /// Specifies whether the segment child icon should be shown.
+    pub display_child_icon: bool,
     /// Specifies whether the segment name should be shown.
     pub show_segment_name: bool,
     /// The color of the segment name if it's shown. If [`None`] is specified,
@@ -89,6 +93,10 @@ pub struct State {
     /// image cache. The image may be the empty image. This indicates that there
     /// is no icon.
     pub icon: ImageId,
+    /// The child icon of the segment. The associated image can be looked up in the
+    /// image cache. The image may be the empty image. This indicates that there
+    /// is no icon.
+    pub child_icon: ImageId,
     /// The color of the segment name if it's shown. If [`None`] is specified,
     /// the color is taken from the layout.
     pub segment_name_color: Option<Color>,
@@ -298,6 +306,12 @@ impl Component {
             .unwrap_or(Image::EMPTY);
         state.icon = *image_cache.cache(icon.id(), || icon.clone()).id();
 
+        let child_icon = current_split
+            .filter(|_| self.settings.display_child_icon)
+            .map(|s| s.child_icon())
+            .unwrap_or(Image::EMPTY);
+        state.child_icon = *image_cache.cache(child_icon.id(), || child_icon.clone()).id();
+
         self.timer
             .update_state(&mut state.timer, timer, layout_settings);
 
@@ -461,7 +475,12 @@ impl Component {
             Field::new(
                 "Display Icon".into(),
                 "Specifies whether the segment icon should be shown.".into(),
-                self.settings.display_icon.into(),
+                self.settings.display_icon.into()
+            ),
+            Field::new(
+                "Display Child Icon".into(),
+                "Specifies whether the segment's child icon should be shown.".into(),
+                self.settings.display_child_icon.into()
             ),
         ])
     }
@@ -540,6 +559,7 @@ impl Component {
             18 => self.settings.show_segment_name = value.into(),
             19 => self.settings.segment_name_color = value.into(),
             20 => self.settings.display_icon = value.into(),
+            21 => self.settings.display_child_icon = value.into(),
             _ => panic!("Unsupported Setting Index"),
         }
     }

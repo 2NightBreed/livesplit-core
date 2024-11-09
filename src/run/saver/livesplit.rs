@@ -275,6 +275,7 @@ pub fn save_run<W: fmt::Write>(run: &Run, writer: W) -> fmt::Result {
             writer.tag_with_content("Segment", NO_ATTRIBUTES, |writer| {
                 writer.tag_with_text_content("Name", NO_ATTRIBUTES, segment.name())?;
                 image(writer, "Icon", segment.icon(), base64_buf, image_buf)?;
+                image(writer, "ChildIcon", segment.child_icon(), base64_buf, image_buf)?;
 
                 scoped_iter(
                     writer,
