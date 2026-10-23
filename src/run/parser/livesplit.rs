@@ -280,6 +280,9 @@ fn parse_segment(
         "Icon" => image(reader, image_buf, |i| {
             segment.set_icon(Image::new(i.into(), Image::ICON))
         }),
+        "LastSubsplitIcon" => image(reader, image_buf, |i| {
+            segment.set_last_subsplit_icon(Image::new(i.into(), Image::ICON))
+        }),
         "SplitTimes" => {
             if version >= Version(1, 3, 0, 0) {
                 parse_children(reader, |reader, tag, attributes| -> Result<()> {

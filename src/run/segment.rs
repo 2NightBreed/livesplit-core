@@ -24,6 +24,7 @@ use crate::{
 pub struct Segment {
     name: String,
     icon: Image,
+    last_subsplit_icon: Image,
     best_segment_time: Time,
     split_time: Time,
     segment_history: SegmentHistory,
@@ -68,6 +69,18 @@ impl Segment {
     #[inline]
     pub fn set_icon(&mut self, image: Image) {
         self.icon = image;
+    }
+
+    /// Accesses the last subsplit icon of the segment.
+    #[inline]
+    pub const fn last_subsplit_icon(&self) -> &Image {
+        &self.last_subsplit_icon
+    }
+
+    /// Sets the last subsplit icon of the segment.
+    #[inline]
+    pub fn set_last_subsplit_icon(&mut self, image: Image) {
+        self.last_subsplit_icon = image;
     }
 
     /// Grants mutable access to the comparison times stored in the Segment.
